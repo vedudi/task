@@ -6,7 +6,6 @@ import {useNavigation} from '@react-navigation/native';
 import ScreenName from '../constants/ScreenName';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-
 const TodoItem = ({sari}) => {
   const navigations = useNavigation();
   return (
@@ -48,7 +47,9 @@ const TodoItem = ({sari}) => {
           </View>
           <StatusButton
             iconName="pencil"
-            onPress={() => navigations.navigate(ScreenName.addtask)}
+            onPress={() =>
+              navigations.navigate(ScreenName.addtask, {data: sari})
+            }
           />
           <StatusButton iconName="delete" color={'#c0695e'} />
         </View>
@@ -58,14 +59,14 @@ const TodoItem = ({sari}) => {
         <View>
           <Text>Başlangıç Tarihi</Text>
           <View>
-            <Icon name='clock-outline' color={colors.primary} size={15}/>
+            <Icon name="clock-outline" color={colors.primary} size={15} />
             <Text style={styles.timeText}>15.07.2016-19:30</Text>
           </View>
         </View>
         <View>
           <Text>Bitiş Tarihi</Text>
           <View>
-            <Icon name='clock-outline' color={colors.primary} size={15}/>
+            <Icon name="clock-outline" color={colors.primary} size={15} />
             <Text style={styles.timeText}>01.09.2016-01:30</Text>
           </View>
         </View>

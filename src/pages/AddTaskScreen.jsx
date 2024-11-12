@@ -6,13 +6,17 @@ import colors from '../themes/Colors';
 import SearchIcon from '../assets/images/SearchIcon.png';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import DropDownPicker from 'react-native-dropdown-picker';
+import DatePicker from '../components/DatePicker';
+import CustomButton from '../components/CustomButton';
 
-const AddTaskScreen = () => {
-  const [title, setTitle] = useState('');
+const AddTaskScreen = ({route}) => {
+  const data = route?.params?.data;
+  console.log(data);
+  const [title, setTitle] = useState(data?.lacivert);
   const [open, setOpen] = useState(false);
-  const [value, setValue] = useState(data?.status || null);
-  const [startDate, setStartDate] = useState(data?.startDate || '');
-  const [endDate, setEndDate] = useState(data?.endDate || '');
+  const [value, setValue] = useState(null);
+  const [startDate, setStartDate] = useState();
+  const [endDate, setEndDate] = useState();
   const [items, setItems] = useState([
     {label: 'Open', value: 'open'},
     {label: 'Progress', value: 'progress'},
@@ -23,6 +27,7 @@ const AddTaskScreen = () => {
   const [isEndDatePickerVisible, setEndDatePickerVisibility] = useState(false);
   const showDatePicker = () => {
     setDatePickerVisibility(true);
+    console.log('merhaba');
   };
   const hideDatePicker = () => {
     setDatePickerVisibility(false);
@@ -45,30 +50,24 @@ const AddTaskScreen = () => {
           />
         </View>
         <CustomInput
+          icon={true}
+          value={title}
           imageSource={SearchIcon}
           label={'Task Adı'}
           placeholder="Task Ara"
         />
         <View style={{flexDirection: 'row'}}>
-          <CustomInput
-            onPressIcon={() => showDatePicker()}
-            imageSource={SearchIcon}
-            label={'Başlangıç Zamanı'}
-            style={{width: '40%'}}
-            placeholder="set start time"
+          <DatePicker
+            label="Başlangıç Zamanı"
+            onPress={() => showDatePicker()}
           />
-          <CustomInput
-            onPressIcon={() => showDatePicker()}
-            imageSource={SearchIcon}
-            label={'Bitiş Zamaanı'}
-            style={{width: '40%'}}
-            placeholder="set end time"
-          />
+          <DatePicker label="Bitiş Zamanı" onPress={() => showDatePicker()} />
         </View>
+
         <View>
-          <View>
+          <View style={styles.dropdownContainer}>
             <View>
-              <Text>status</Text>
+              <Text style={styles.status}>Status</Text>
               <DropDownPicker
                 open={open}
                 value={value}
@@ -76,11 +75,14 @@ const AddTaskScreen = () => {
                 setOpen={setOpen}
                 setValue={setValue}
                 setItems={setItems}
+                containerStyle={{width: '95%', margin: 'auto'}}
+                style={{borderWidth: 0}}
               />
             </View>
           </View>
         </View>
       </View>
+      <CustomButton label={'Save Task'} style={{width:'30%'}}/>
       <DateTimePickerModal
         mode="datetime"
         onCancel={hideDatePicker}
@@ -116,5 +118,6 @@ const styles = StyleSheet.create({
     marginBottom: 5,
     fontWeight: '600',
     color: colors.text.primary,
+    marginLeft:'15'
   },
 });

@@ -17,26 +17,21 @@ const CustomInput = ({
   label,
   placeholder,
   onPressIcon,
+  icon,
   ...rest
 }) => {
   return (
-    <TouchableOpacity
-      onPressIcon={() => onPressIcon()}
-      style={[styles.container, style]}>
+    <TouchableOpacity style={[styles.container, style]}>
       <Text style={styles.label}>{label}</Text>
       <View style={styles.inputContainer}>
-        <Image source={imageSource} style={styles.image} />
-        {!onPressIcon ? (
-          <TextInput
-            placeholder={placeholder}
-            {...rest}
-            value={value}
-            onChangeText={onChangeText}
-            style={styles.textInput}
-          />
-        ) : (
-          <Text>{value}</Text>
-        )}
+        {icon && <Image source={imageSource} style={styles.image} />}
+        <TextInput
+          placeholder={placeholder}
+          {...rest}
+          value={value}
+          onChangeText={onChangeText}
+          style={styles.textInput}
+        />
       </View>
     </TouchableOpacity>
   );
@@ -57,7 +52,7 @@ const styles = StyleSheet.create({
   textInput: {
     flex: 1,
     fontSize: 16,
-    padding: 0,
+    padding: 10,
   },
   inputContainer: {
     flexDirection: 'row',

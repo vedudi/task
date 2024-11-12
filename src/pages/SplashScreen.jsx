@@ -1,5 +1,6 @@
-import {StyleSheet, View} from 'react-native';
-import React from 'react';
+import React, {useEffect} from 'react';
+import {Alert, StyleSheet, View} from 'react-native';
+
 import LottieView from 'lottie-react-native';
 import {useNavigation} from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -8,16 +9,23 @@ import ScreenName from '../constants/ScreenName';
 
 const SplashScreen = () => {
   const navigation = useNavigation();
-  async function checkOnboardingComplete() {
+  const checkOnboardingComplete = async () => {
     const onboardingComplete = await AsyncStorage.getItem(
       AsyncStorageKey.OnboardingComplete,
     );
+    console.log(onboardingComplete);
     if (onboardingComplete === 'true') {
       navigation.replace(ScreenName.tasklist);
     } else {
       navigation.replace(ScreenName.onboarding);
     }
-  }
+  };
+  useEffect(() => {
+    setTimeout(() => {
+      checkOnboardingComplete();
+    }, 3000);
+  }, []);
+
   return (
     <View style={styles.container}>
       <LottieView
@@ -25,13 +33,7 @@ const SplashScreen = () => {
         source={require('../assets/animation/todoanimation.json')}
         style={{flex: 1}}
         loop={false}
-        onAnimationFinish={() => {
-          setTimeout(() => {
-            checkOnboardingComplete();
-          }, 900);
-        }}
       />
-    
     </View>
   );
 };
