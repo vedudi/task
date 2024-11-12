@@ -6,7 +6,7 @@ import Routes from './navigationss/Routes';
 const App = () => {
   return (
     <NavigationContainer>
-      <Routes/>
+      <Routes />
     </NavigationContainer>
   );
 };

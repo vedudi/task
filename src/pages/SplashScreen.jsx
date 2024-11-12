@@ -1,4 +1,4 @@
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import React from 'react';
 import LottieView from 'lottie-react-native';
 import {useNavigation} from '@react-navigation/native';
@@ -28,9 +28,10 @@ const SplashScreen = () => {
         onAnimationFinish={() => {
           setTimeout(() => {
             checkOnboardingComplete();
-          },900);
+          }, 900);
         }}
       />
+    
     </View>
   );
 };
