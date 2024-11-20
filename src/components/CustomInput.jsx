@@ -17,21 +17,30 @@ const CustomInput = ({
   label,
   placeholder,
   onPressIcon,
-  icon,
+  Icon,
+  isDate,
   ...rest
 }) => {
   return (
-    <TouchableOpacity style={[styles.container, style]}>
+    <TouchableOpacity
+      disabled={onPressIcon ? false : true}
+      onPress={() => onPressIcon()}
+      style={[styles.container, style]}>
       <Text style={styles.label}>{label}</Text>
       <View style={styles.inputContainer}>
-        {icon && <Image source={imageSource} style={styles.image} />}
-        <TextInput
-          placeholder={placeholder}
-          {...rest}
-          value={value}
-          onChangeText={onChangeText}
-          style={styles.textInput}
-        />
+        {Icon || <Image source={imageSource} style={styles.image} />}
+        {!onPressIcon ? (
+          <TextInput
+            value={value}
+            {...rest}
+            onChangeText={onChangeText}
+            style={styles.textInput}
+          />
+        ) : (
+          <Text style={styles.date}>
+            {value && formatDate(value?.toString())}
+          </Text>
+        )}
       </View>
     </TouchableOpacity>
   );

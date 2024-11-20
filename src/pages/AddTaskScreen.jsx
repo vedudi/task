@@ -8,15 +8,19 @@ import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import DropDownPicker from 'react-native-dropdown-picker';
 import DatePicker from '../components/DatePicker';
 import CustomButton from '../components/CustomButton';
+import uuid from 'react-native-uuid';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {useNavigation} from '@react-navigation/native';
+import ScreenName from '../constants/ScreenName';
 
 const AddTaskScreen = ({route}) => {
   const data = route?.params?.data;
-  console.log(data);
+  const navigation = useNavigation();
   const [title, setTitle] = useState(data?.lacivert);
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(null);
-  const [startDate, setStartDate] = useState();
-  const [endDate, setEndDate] = useState();
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
   const [items, setItems] = useState([
     {label: 'Open', value: 'open'},
     {label: 'Progress', value: 'progress'},
@@ -25,18 +29,60 @@ const AddTaskScreen = ({route}) => {
   ]);
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [isEndDatePickerVisible, setEndDatePickerVisibility] = useState(false);
-  const showDatePicker = () => {
-    setDatePickerVisibility(true);
-    console.log('merhaba');
-  };
-  const hideDatePicker = () => {
-    setDatePickerVisibility(false);
-  };
-  const handleConfirm = date => {
-    console.warn('A date has been picked:', date);
+  const [isStartDatePickerVisible, setStartDatePickerVisibility] =
+    useState(false);
 
-    hideDatePicker();
+  const hideStartDatePicker = () => {
+    setStartDatePickerVisibility(false);
   };
+  const handleConfirmStartDate = date => {
+    setStartDate(date.toString());
+    hideStartDatePicker();
+  };
+  const hideEndDatePicker = () => {
+    setEndDatePickerVisibility(false);
+  };
+  const handleConfirmEndDate = date => {
+    setEndDate(date.toString());
+    hideEndDatePicker();
+  };
+
+  const showStartDatePicker = () => {
+    setStartDatePickerVisibility(true);
+  };
+  const showEndDatePicker = () => {
+    setEndDatePickerVisibility(true);
+  };
+
+  // const hideDatePicker = () => {
+  //   setDatePickerVisibility(false);
+  // };
+  // const handleConfirm = date => {
+  //   hideDatePicker();
+  // };
+  const handleAddTask = async () => {
+    const newTask = {
+      id: data?.id || uuid.v4(),
+      title,
+      startDate,
+      endDate,
+      status: value,
+    };
+    try {
+      const excitingTasks = await AsyncStorage.getItem('tasks');
+      let tasks = excitingTasks ? JSON.parse(excitingTasks) : [];
+      if (data) {
+        tasks = tasks.map(tasks.id === data.id ? newTask : tasks);
+      } else {
+        tasks.push(newTask);
+      }
+      await AsyncStorage.setItem('tasks', JSON.stringify(tasks));
+      navigation.navigate(ScreenName.tasklist);
+    } catch (error) {
+      console.log(error, 'Failed to save task');
+    }
+  };
+  console.warn(startDate);
 
   return (
     <View style={styles.container}>
@@ -58,10 +104,19 @@ const AddTaskScreen = ({route}) => {
         />
         <View style={{flexDirection: 'row'}}>
           <DatePicker
+            value={startDate}
+            isDate
+            onChangeText={setStartDate}
             label="Başlangıç Zamanı"
-            onPress={() => showDatePicker()}
+            onPress={() => showStartDatePicker()}
           />
-          <DatePicker label="Bitiş Zamanı" onPress={() => showDatePicker()} />
+          <DatePicker
+            value={endDate}
+            onChangeText={setEndDate}
+            isDate
+            label="Bitiş Zamanı"
+            onPress={() => showEndDatePicker()}
+          />
         </View>
 
         <View>
@@ -82,12 +137,22 @@ const AddTaskScreen = ({route}) => {
           </View>
         </View>
       </View>
-      <CustomButton label={'Save Task'} style={{width:'30%'}}/>
+      <CustomButton
+        onPress={handleAddTask}
+        label={data ? 'update task' : 'Save Task'}
+        style={{width: '30%'}}
+      />
       <DateTimePickerModal
         mode="datetime"
-        onCancel={hideDatePicker}
-        isVisible={isDatePickerVisible}
-        onConfirm={handleConfirm}
+        onCancel={hideStartDatePicker}
+        isVisible={isStartDatePickerVisible}
+        onConfirm={handleConfirmStartDate}
+      />
+      <DateTimePickerModal
+        mode="datetime"
+        onCancel={hideEndDatePicker}
+        isVisible={isEndDatePickerVisible}
+        onConfirm={handleConfirmEndDate}
       />
     </View>
   );
@@ -118,6 +183,6 @@ const styles = StyleSheet.create({
     marginBottom: 5,
     fontWeight: '600',
     color: colors.text.primary,
-    marginLeft:'15'
+    marginLeft: '15',
   },
 });

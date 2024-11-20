@@ -6,7 +6,7 @@ import colors from '../themes/Colors';
 const CustomButton = ({label, style, onPress}) => {
 
   return (
-    <TouchableOpacity style={[styles.button, style]} onPress={() => onPress}>
+    <TouchableOpacity style={[styles.button, style]} onPress={() => onPress()}>
       <Text style={styles.label}>{label}</Text>
     </TouchableOpacity>
   );

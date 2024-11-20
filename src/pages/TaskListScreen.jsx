@@ -14,6 +14,7 @@ import TodoItem from '../components/TodoItem';
 import CustomButton from '../components/CustomButton';
 import {useNavigation} from '@react-navigation/native';
 import ScreenName from '../constants/ScreenName';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 const TaskListScreen = () => {
   const [searchText, setSearchText] = useState('');
   const navigation = useNavigation();
@@ -43,6 +44,19 @@ const TaskListScreen = () => {
       status: 'closed',
     },
   ]);
+
+  const loadTask = async () => {
+    try {
+      const existingTasks = await AsyncStorage.getItem('tasks');
+      // const tasks = existingTasks ? JSON.parse(existingTasks) : [];
+      // setTasks(tasks);
+      console.log(existingTasks);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  loadTask();
+
   return (
     <View style={styles.container}>
       <View style={styles.mainContentContainer}>

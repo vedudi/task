@@ -13,7 +13,7 @@ const SplashScreen = () => {
     const onboardingComplete = await AsyncStorage.getItem(
       AsyncStorageKey.OnboardingComplete,
     );
-    console.log(onboardingComplete);
+
     if (onboardingComplete === 'true') {
       navigation.replace(ScreenName.tasklist);
     } else {
