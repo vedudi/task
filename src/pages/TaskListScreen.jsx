@@ -6,7 +6,7 @@ import {
   Text,
   View,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import CustomInput from '../components/CustomInput';
 import colors from '../themes/Colors';
 import Icon from '../assets/images/SearchIcon.png';
@@ -55,7 +55,16 @@ const TaskListScreen = () => {
       console.log(error);
     }
   };
-  loadTask();
+
+  
+  const saveTask = async () => {
+    await AsyncStorage.setItem('tasks', JSON.stringify(tasks));
+  };
+  
+  useEffect(() => {
+    saveTask();
+    loadTask();
+  }, []); loadTask();
 
   return (
     <View style={styles.container}>
