@@ -6,7 +6,7 @@ import {useNavigation} from '@react-navigation/native';
 import ScreenName from '../constants/ScreenName';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-const TodoItem = ({sari}) => {
+const TodoItem = ({data}) => {
   const navigations = useNavigation();
   return (
     <View style={styles.container}>
@@ -16,12 +16,10 @@ const TodoItem = ({sari}) => {
             styles.taskTitle,
             {
               textDecorationLine:
-                sari.status === 'closed' ? 'line-through' : null,
+                data?.status === 'closed' ? 'line-through' : null,
             },
           ]}>
-          {sari.lacivert === 'fenerbahçe'
-            ? sari.lacivert.toUpperCase()
-            : sari.lacivert.toLowerCase()}
+          {data?.title?.toUpperCase()}
         </Text>
         <View style={{flexDirection: 'row'}}>
           <View
@@ -29,7 +27,7 @@ const TodoItem = ({sari}) => {
               styles.statusContainer,
               {
                 backgroundColor:
-                  sari.status === ('done' || 'progress')
+                  data?.status === ('done' || 'progress')
                     ? '#CAF6cb'
                     : '#FECcb1',
               },
@@ -37,24 +35,24 @@ const TodoItem = ({sari}) => {
             <Text
               style={{
                 color:
-                  sari.status === ('done' || 'progress')
+                  data?.status === ('done' || 'progress')
                     ? '#72966f'
                     : '#d6825c',
               }}>
               {' '}
-              {sari.status}{' '}
+              {data?.status}{' '}
             </Text>
           </View>
           <StatusButton
             iconName="pencil"
             onPress={() =>
-              navigations.navigate(ScreenName.addtask, {data: sari})
+              navigations.navigate(ScreenName.addtask, {data})
             }
           />
           <StatusButton iconName="delete" color={'#c0695e'} />
         </View>
       </View>
-      <Text style={styles.taskDescription}> {sari?.description} </Text>
+      <Text style={styles.taskDescription}> {data?.description} </Text>
       <View style={styles.footerContainer}>
         <View>
           <Text>Başlangıç Tarihi</Text>

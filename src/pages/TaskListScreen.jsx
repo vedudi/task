@@ -6,44 +6,34 @@ import {
   Text,
   View,
 } from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import CustomInput from '../components/CustomInput';
 import colors from '../themes/Colors';
 import Icon from '../assets/images/SearchIcon.png';
 import TodoItem from '../components/TodoItem';
 import CustomButton from '../components/CustomButton';
-import {useNavigation} from '@react-navigation/native';
+import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import ScreenName from '../constants/ScreenName';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 const TaskListScreen = () => {
   const [searchText, setSearchText] = useState('');
   const navigation = useNavigation();
-  const [tasks, setTasks] = useState([
-    {
-      lacivert: 'fenerbahçe',
-      status: 'done',
-    },
-    {
-      lacivert: 'galatasaray',
-      status: 'closed',
-    },
-    {
-      lacivert: 'fenerbahçe',
-      status: 'done',
-    },
-    {
-      lacivert: 'galatasaray',
-      status: 'closed',
-    },
-    {
-      lacivert: 'fenerbahçe',
-      status: 'done',
-    },
-    {
-      lacivert: 'galatasaray',
-      status: 'closed',
-    },
-  ]);
+  const [tasks, setTasks] = useState([]);
+  // const clearAll = async () => { 
+  //   try{ 
+  //     await AsyncStorage.clear(); 
+  //   }catch(error){ 
+  //     console.log(error) 
+  //   } 
+  // } 
+  // useEffect(()=>{ 
+  //   clearAll(); 
+  // },[])
+  useFocusEffect(
+    useCallback(() => {
+      loadTask();
+    }, []),
+  );
 
   const loadTask = async () => {
     try {
@@ -55,7 +45,7 @@ const TaskListScreen = () => {
       console.log(error);
     }
   };
-  loadTask();
+
 
   // const saveTask = async () => {
   //   await AsyncStorage.setItem('tasks', JSON.stringify(tasks));
@@ -80,7 +70,7 @@ const TaskListScreen = () => {
             // keyExtractor={item => item?.id.toString()}
             showsVerticalScrollIndicator={false}
             data={tasks}
-            renderItem={({item}) => <TodoItem sari={item} />}
+            renderItem={({item}) => <TodoItem data={item} />}
           />
         </SafeAreaView>
         <CustomButton
