@@ -48,23 +48,23 @@ const TaskListScreen = () => {
   const loadTask = async () => {
     try {
       const existingTasks = await AsyncStorage.getItem('tasks');
-      // const tasks = existingTasks ? JSON.parse(existingTasks) : [];
-      // setTasks(tasks);
+      const tasks = existingTasks ? JSON.parse(existingTasks) : [];
+      setTasks(tasks);
       console.log(existingTasks);
     } catch (error) {
       console.log(error);
     }
   };
+  loadTask();
 
-  
-  const saveTask = async () => {
-    await AsyncStorage.setItem('tasks', JSON.stringify(tasks));
-  };
-  
-  useEffect(() => {
-    saveTask();
-    loadTask();
-  }, []); loadTask();
+  // const saveTask = async () => {
+  //   await AsyncStorage.setItem('tasks', JSON.stringify(tasks));
+  // };
+
+  // useEffect(() => {
+  //   saveTask();
+  //   loadTask();
+  // }, []);
 
   return (
     <View style={styles.container}>
