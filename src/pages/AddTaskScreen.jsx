@@ -96,6 +96,7 @@ const AddTaskScreen = ({route}) => {
           />
         </View>
         <CustomInput
+        onChangeText={setTitle}
           icon={true}
           value={title}
           imageSource={SearchIcon}

@@ -29,11 +29,7 @@ const TaskListScreen = () => {
   // useEffect(()=>{ 
   //   clearAll(); 
   // },[])
-  useFocusEffect(
-    useCallback(() => {
-      loadTask();
-    }, []),
-  );
+
 
   const loadTask = async () => {
     try {
@@ -46,7 +42,11 @@ const TaskListScreen = () => {
     }
   };
 
-
+  useFocusEffect(
+    useCallback(() => {
+      loadTask();
+    }, []),
+  );
   // const saveTask = async () => {
   //   await AsyncStorage.setItem('tasks', JSON.stringify(tasks));
   // };
