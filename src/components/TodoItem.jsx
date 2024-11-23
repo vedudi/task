@@ -27,7 +27,7 @@ const TodoItem = ({data}) => {
               styles.statusContainer,
               {
                 backgroundColor:
-                  data?.status === ('done' || 'progress')
+                  data?.status === ('open' || 'progress')
                     ? '#CAF6cb'
                     : '#FECcb1',
               },
@@ -35,7 +35,7 @@ const TodoItem = ({data}) => {
             <Text
               style={{
                 color:
-                  data?.status === ('done' || 'progress')
+                  data?.status === ('open' || 'progress')
                     ? '#72966f'
                     : '#d6825c',
               }}>
