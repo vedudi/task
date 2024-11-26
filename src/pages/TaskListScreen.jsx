@@ -21,6 +21,7 @@ const TaskListScreen = () => {
   const [searchText, setSearchText] = useState('');
   const navigation = useNavigation();
   const [tasks, setTasks] = useState([]);
+  const [filtredTasks, setFiltredTasks] = useState([]);
   // const clearAll = async () => {
   //   try{
   //     await AsyncStorage.clear();
@@ -41,6 +42,21 @@ const TaskListScreen = () => {
       console.log(error);
     }
   };
+  const filterTasks = () => {
+    if (searchText) {
+      //* taskların title ile searchText eşleşirse dizi olarak ver
+      const filtred = tasks.filter(task =>
+        task.title.toLowerCase().includes(searchText.toLowerCase()),
+      );
+      //* filtrelenmiş diziyi state aktar
+
+      setFiltredTasks(filtred);
+    } else {
+      //* searchText boş ise taskların hepsini ekrana bastır
+      setFiltredTasks(tasks);
+    }
+  };
+  // filterTasks();
 
   useFocusEffect(
     useCallback(() => {
@@ -50,10 +66,11 @@ const TaskListScreen = () => {
   // const saveTask = async () => {
   // };
 
-  // useEffect(() => {
-  //   saveTask();
-  //   loadTask();
-  // }, []);
+  useEffect(() => {
+    filterTasks();
+  }, [searchText, tasks]);
+
+  
   const handleDeleteTask = async id => {
     try {
       const updatedTasks = tasks.filter(task => task.id !== id);
@@ -63,7 +80,7 @@ const TaskListScreen = () => {
       console.warn('hata', error);
     }
   };
- 
+
   return (
     <View style={styles.container}>
       <View style={styles.mainContentContainer}>
@@ -79,7 +96,7 @@ const TaskListScreen = () => {
             showsVerticalScrollIndicator={false}
             ListEmptyComponent={renderEmptyList}
             ListHeaderComponent={HeaderList}
-            data={tasks}
+            data={filtredTasks}
             renderItem={({item}) => (
               <TodoItem
                 data={item}
@@ -111,6 +128,4 @@ const styles = StyleSheet.create({
     padding: 20,
     width: Dimensions.get('screen').width,
   },
- 
-
 });
