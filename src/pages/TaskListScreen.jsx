@@ -15,6 +15,8 @@ import CustomButton from '../components/CustomButton';
 import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import ScreenName from '../constants/ScreenName';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import renderEmptyList from '../components/Empty';
+import HeaderList from '../components/HeaderList';
 const TaskListScreen = () => {
   const [searchText, setSearchText] = useState('');
   const navigation = useNavigation();
@@ -35,7 +37,6 @@ const TaskListScreen = () => {
       const existingTasks = await AsyncStorage.getItem('tasks');
       const tasks = existingTasks ? JSON.parse(existingTasks) : [];
       setTasks(tasks);
-
     } catch (error) {
       console.log(error);
     }
@@ -55,16 +56,14 @@ const TaskListScreen = () => {
   // }, []);
   const handleDeleteTask = async id => {
     try {
-      const updatedTasks=tasks.filter(task=>task.id!==id)
-      setTasks(updatedTasks)
-    await AsyncStorage.setItem('tasks', JSON.stringify(updatedTasks));
-
+      const updatedTasks = tasks.filter(task => task.id !== id);
+      setTasks(updatedTasks);
+      await AsyncStorage.setItem('tasks', JSON.stringify(updatedTasks));
     } catch (error) {
-      
+      console.warn('hata', error);
     }
-    console.warn('silindi',id);
-    
   };
+ 
   return (
     <View style={styles.container}>
       <View style={styles.mainContentContainer}>
@@ -78,6 +77,8 @@ const TaskListScreen = () => {
           <FlatList
             // keyExtractor={item => item?.id.toString()}
             showsVerticalScrollIndicator={false}
+            ListEmptyComponent={renderEmptyList}
+            ListHeaderComponent={HeaderList}
             data={tasks}
             renderItem={({item}) => (
               <TodoItem
@@ -110,12 +111,6 @@ const styles = StyleSheet.create({
     padding: 20,
     width: Dimensions.get('screen').width,
   },
-  headerContainer: {
-    marginBottom: 10,
-  },
-  headerText: {
-    fontSize: 25,
-    fontWeight: 'bold',
-    color: colors.text.primary,
-  },
+ 
+
 });
