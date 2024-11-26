@@ -82,7 +82,7 @@ const AddTaskScreen = ({route}) => {
       console.log(error, 'Failed to save task');
     }
   };
-  console.warn(startDate);
+  // console.warn(startDate);
 
   return (
     <View style={styles.container}>

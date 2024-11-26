@@ -19,24 +19,23 @@ const TaskListScreen = () => {
   const [searchText, setSearchText] = useState('');
   const navigation = useNavigation();
   const [tasks, setTasks] = useState([]);
-  // const clearAll = async () => { 
-  //   try{ 
-  //     await AsyncStorage.clear(); 
-  //   }catch(error){ 
-  //     console.log(error) 
-  //   } 
-  // } 
-  // useEffect(()=>{ 
-  //   clearAll(); 
+  // const clearAll = async () => {
+  //   try{
+  //     await AsyncStorage.clear();
+  //   }catch(error){
+  //     console.log(error)
+  //   }
+  // }
+  // useEffect(()=>{
+  //   clearAll();
   // },[])
-
 
   const loadTask = async () => {
     try {
       const existingTasks = await AsyncStorage.getItem('tasks');
       const tasks = existingTasks ? JSON.parse(existingTasks) : [];
       setTasks(tasks);
-      console.log(existingTasks);
+
     } catch (error) {
       console.log(error);
     }
@@ -48,14 +47,24 @@ const TaskListScreen = () => {
     }, []),
   );
   // const saveTask = async () => {
-  //   await AsyncStorage.setItem('tasks', JSON.stringify(tasks));
   // };
 
   // useEffect(() => {
   //   saveTask();
   //   loadTask();
   // }, []);
+  const handleDeleteTask = async id => {
+    try {
+      const updatedTasks=tasks.filter(task=>task.id!==id)
+      setTasks(updatedTasks)
+    await AsyncStorage.setItem('tasks', JSON.stringify(updatedTasks));
 
+    } catch (error) {
+      
+    }
+    console.warn('silindi',id);
+    
+  };
   return (
     <View style={styles.container}>
       <View style={styles.mainContentContainer}>
@@ -70,7 +79,12 @@ const TaskListScreen = () => {
             // keyExtractor={item => item?.id.toString()}
             showsVerticalScrollIndicator={false}
             data={tasks}
-            renderItem={({item}) => <TodoItem data={item} />}
+            renderItem={({item}) => (
+              <TodoItem
+                data={item}
+                onDelete={() => handleDeleteTask(item.id)}
+              />
+            )}
           />
         </SafeAreaView>
         <CustomButton

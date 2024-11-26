@@ -6,7 +6,7 @@ import {useNavigation} from '@react-navigation/native';
 import ScreenName from '../constants/ScreenName';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-const TodoItem = ({data}) => {
+const TodoItem = ({data,onDelete}) => {
   const navigations = useNavigation();
   return (
     <View style={styles.container}>
@@ -49,7 +49,7 @@ const TodoItem = ({data}) => {
               navigations.navigate(ScreenName.addtask, {data})
             }
           />
-          <StatusButton iconName="delete" color={'#c0695e'} />
+          <StatusButton iconName="delete" onPress={()=>onDelete()} color={'#c0695e'} />
         </View>
       </View>
       <Text style={styles.taskDescription}> {data?.description} </Text>
