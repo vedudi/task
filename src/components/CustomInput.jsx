@@ -8,6 +8,7 @@ import {
 } from 'react-native';
 import React from 'react';
 import colors from '../themes/Colors';
+import formatDate from '../utils/formatDate';
 
 const CustomInput = ({
   imageSource,

@@ -5,6 +5,7 @@ import StatusButton from './StatusButton';
 import {useNavigation} from '@react-navigation/native';
 import ScreenName from '../constants/ScreenName';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import formatDate from '../utils/formatDate';
 
 const TodoItem = ({data,onDelete}) => {
   const navigations = useNavigation();
@@ -58,14 +59,14 @@ const TodoItem = ({data,onDelete}) => {
           <Text>Başlangıç Tarihi</Text>
           <View>
             <Icon name="clock-outline" color={colors.primary} size={15} />
-            <Text style={styles.timeText}>15.07.2016-19:30</Text>
+            <Text style={styles.timeText}> {formatDate(data.startDate)} </Text>
           </View>
         </View>
         <View>
           <Text>Bitiş Tarihi</Text>
           <View>
             <Icon name="clock-outline" color={colors.primary} size={15} />
-            <Text style={styles.timeText}>01.09.2016-01:30</Text>
+            <Text style={styles.timeText}>{formatDate(data.endDate)}</Text>
           </View>
         </View>
       </View>

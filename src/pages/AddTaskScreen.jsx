@@ -10,17 +10,18 @@ import DatePicker from '../components/DatePicker';
 import CustomButton from '../components/CustomButton';
 import uuid from 'react-native-uuid';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {useNavigation} from '@react-navigation/native';
+import {useNavigation, useRoute} from '@react-navigation/native';
 import ScreenName from '../constants/ScreenName';
 
-const AddTaskScreen = ({route}) => {
+const AddTaskScreen = () => {
+  const route = useRoute();
   const data = route?.params?.data;
   const navigation = useNavigation();
-  const [title, setTitle] = useState(data?.lacivert);
+  const [title, setTitle] = useState(data?.title);
   const [open, setOpen] = useState(false);
-  const [value, setValue] = useState(null);
-  const [startDate, setStartDate] = useState('');
-  const [endDate, setEndDate] = useState('');
+  const [value, setValue] = useState(data.value);
+  const [startDate, setStartDate] = useState(data?.startDate);
+  const [endDate, setEndDate] = useState(data?.endDate);
   const [items, setItems] = useState([
     {label: 'Open', value: 'open'},
     {label: 'Progress', value: 'progress'},
@@ -96,7 +97,7 @@ const AddTaskScreen = ({route}) => {
           />
         </View>
         <CustomInput
-        onChangeText={setTitle}
+          onChangeText={setTitle}
           icon={true}
           value={title}
           imageSource={SearchIcon}
