@@ -73,7 +73,7 @@ const AddTaskScreen = () => {
       const excitingTasks = await AsyncStorage.getItem('tasks');
       let tasks = excitingTasks ? JSON.parse(excitingTasks) : [];
       if (data) {
-        tasks = tasks.map(tasks.id === data.id ? newTask : tasks);
+        tasks = tasks.map(tasks=>tasks.id === data.id ? newTask : tasks);
       } else {
         tasks.push(newTask);
       }

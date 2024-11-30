@@ -57,14 +57,14 @@ const TodoItem = ({data,onDelete}) => {
       <View style={styles.footerContainer}>
         <View>
           <Text>Başlangıç Tarihi</Text>
-          <View>
+          <View style={styles.timeContainer}>
             <Icon name="clock-outline" color={colors.primary} size={15} />
             <Text style={styles.timeText}> {formatDate(data.startDate)} </Text>
           </View>
         </View>
         <View>
           <Text>Bitiş Tarihi</Text>
-          <View>
+          <View style={styles.timeContainer}>
             <Icon name="clock-outline" color={colors.primary} size={15} />
             <Text style={styles.timeText}>{formatDate(data.endDate)}</Text>
           </View>
