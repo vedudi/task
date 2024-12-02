@@ -19,7 +19,7 @@ const AddTaskScreen = () => {
   const navigation = useNavigation();
   const [title, setTitle] = useState(data?.title);
   const [open, setOpen] = useState(false);
-  const [value, setValue] = useState(data.value);
+  const [value, setValue] = useState(data?.value);
   const [startDate, setStartDate] = useState(data?.startDate);
   const [endDate, setEndDate] = useState(data?.endDate);
   const [items, setItems] = useState([
