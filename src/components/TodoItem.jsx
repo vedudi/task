@@ -9,6 +9,8 @@ import formatDate from '../utils/formatDate';
 
 const TodoItem = ({data,onDelete}) => {
   const navigations = useNavigation();
+
+  
   return (
     <View style={styles.container}>
       <View style={styles.itemHeader}>
@@ -41,7 +43,7 @@ const TodoItem = ({data,onDelete}) => {
                     : '#d6825c',
               }}>
               {' '}
-              {data?.status}{' '}
+              {typeof data.status !== 'object' ? data.status : ""}{' '}
             </Text>
           </View>
           <StatusButton

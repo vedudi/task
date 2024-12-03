@@ -38,6 +38,8 @@ const TaskListScreen = () => {
       const existingTasks = await AsyncStorage.getItem('tasks');
       const tasks = existingTasks ? JSON.parse(existingTasks) : [];
       setTasks(tasks);
+
+      
     } catch (error) {
       console.log(error);
     }

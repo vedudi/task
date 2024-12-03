@@ -73,7 +73,7 @@ const AddTaskScreen = () => {
       const excitingTasks = await AsyncStorage.getItem('tasks');
       let tasks = excitingTasks ? JSON.parse(excitingTasks) : [];
       if (data) {
-        tasks = tasks.map(tasks=>tasks.id === data.id ? newTask : tasks);
+        tasks = tasks.map(task => task.id === data.id ? newTask : task);
       } else {
         tasks.push(newTask);
       }
@@ -132,7 +132,7 @@ const AddTaskScreen = () => {
                 setOpen={setOpen}
                 setValue={setValue}
                 setItems={setItems}
-                containerStyle={{width: '95%', margin: 'auto'}}
+                containerStyle={{width: '95%', alignSelf: 'center'}}
                 style={{borderWidth: 0}}
               />
             </View>
@@ -157,6 +157,7 @@ const AddTaskScreen = () => {
         onConfirm={handleConfirmEndDate}
       />
     </View>
+    
   );
 };
 
