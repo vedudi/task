@@ -17,6 +17,7 @@ import ScreenName from '../constants/ScreenName';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import renderEmptyList from '../components/Empty';
 import HeaderList from '../components/HeaderList';
+import Toast from 'react-native-toast-message';
 const TaskListScreen = () => {
   const [searchText, setSearchText] = useState('');
   const navigation = useNavigation();
@@ -78,6 +79,14 @@ const TaskListScreen = () => {
       const updatedTasks = tasks.filter(task => task.id !== id);
       setTasks(updatedTasks);
       await AsyncStorage.setItem('tasks', JSON.stringify(updatedTasks));
+
+      Toast.show({
+        type:"info",
+        text1:"Task silindi",
+        topOffset:100
+
+      })
+
     } catch (error) {
       console.warn('hata', error);
     }

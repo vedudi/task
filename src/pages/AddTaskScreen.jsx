@@ -1,5 +1,5 @@
 import {StyleSheet, Text, View} from 'react-native';
-import React, {useState} from 'react';
+import React, {useLayoutEffect, useState} from 'react';
 import LottieView from 'lottie-react-native';
 import CustomInput from '../components/CustomInput';
 import colors from '../themes/Colors';
@@ -12,6 +12,7 @@ import uuid from 'react-native-uuid';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import ScreenName from '../constants/ScreenName';
+import Toast from 'react-native-toast-message';
 
 const AddTaskScreen = () => {
   const route = useRoute();
@@ -19,7 +20,7 @@ const AddTaskScreen = () => {
   const navigation = useNavigation();
   const [title, setTitle] = useState(data?.title);
   const [open, setOpen] = useState(false);
-  const [value, setValue] = useState(data?.value);
+  const [value, setValue] = useState(data?.status);
   const [startDate, setStartDate] = useState(data?.startDate);
   const [endDate, setEndDate] = useState(data?.endDate);
   const [items, setItems] = useState([
@@ -32,6 +33,11 @@ const AddTaskScreen = () => {
   const [isEndDatePickerVisible, setEndDatePickerVisibility] = useState(false);
   const [isStartDatePickerVisible, setStartDatePickerVisibility] =
     useState(false);
+    useLayoutEffect(()=>{
+      navigation.setOptions({
+        title: data?'Update Task':'Add Task'
+      })
+    },[navigation,data])
 
   const hideStartDatePicker = () => {
     setStartDatePickerVisibility(false);
@@ -62,6 +68,16 @@ const AddTaskScreen = () => {
   //   hideDatePicker();
   // };
   const handleAddTask = async () => {
+    if (!title || !startDate || !endDate || !value) {
+      Toast.show({
+        type: 'error',
+        text1: 'Uyarı',
+        text2: 'Lütfen tüm alanları doldurun',
+        topOffset:100
+      });
+      return;
+    }
+
     const newTask = {
       id: data?.id || uuid.v4(),
       title,
@@ -73,11 +89,17 @@ const AddTaskScreen = () => {
       const excitingTasks = await AsyncStorage.getItem('tasks');
       let tasks = excitingTasks ? JSON.parse(excitingTasks) : [];
       if (data) {
-        tasks = tasks.map(task => task.id === data.id ? newTask : task);
+        tasks = tasks.map(task => (task.id === data.id ? newTask : task));
       } else {
         tasks.push(newTask);
       }
       await AsyncStorage.setItem('tasks', JSON.stringify(tasks));
+      Toast.show({
+        type:"success",
+        text1:data?"Task updated":"Task added",
+        topOffset:100
+
+      })
       navigation.navigate(ScreenName.tasklist);
     } catch (error) {
       console.log(error, 'Failed to save task');
@@ -157,7 +179,6 @@ const AddTaskScreen = () => {
         onConfirm={handleConfirmEndDate}
       />
     </View>
-    
   );
 };
 

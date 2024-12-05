@@ -2,6 +2,7 @@
 import React, {Component} from 'react';
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import colors from '../themes/Colors';
+import formatDate from '../utils/formatDate';
 
 // create a component
 const DatePicker = ({label, value, onPress}) => {
@@ -20,7 +21,7 @@ const DatePicker = ({label, value, onPress}) => {
           justifyContent: 'center',
           alignItems: 'center',
         }}>
-        <Text>{value ? value : 'please select date'}</Text>
+        <Text>{value?formatDate(value?.toString()) : 'please select date'} </Text>
       </TouchableOpacity>
     </View>
   );
